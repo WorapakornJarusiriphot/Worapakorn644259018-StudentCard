@@ -36,7 +36,7 @@ class StudentClass implements StudentInterface
     $this->UniversityLogo = "npru_logo.jpg";
     $this->CardNumber = "4732 5285 1811 7475";
     $this->Username = "W. JARUSIRIPHOT";
-    $this->CardLogo = "visa3.png";
+    $this->CardLogo = "visa_logo.png";
   }
 
   public function CalDateofBirthAge()
@@ -63,7 +63,7 @@ class StudentClass implements StudentInterface
 
   public function Showcard()
   {
-    echo '<table style="width:8.5cm; height:5.4cm; border:0px solid black; background-image:url(CardEditt5.png); background-repeat:no-repeat; background-size:100% 100%;">';
+    echo '<table style="width:8.5cm; height:5.4cm; border:0px solid black; background-image:url(CardBackground.png); background-repeat:no-repeat; background-size:100% 100%;">';
 
     echo '<tr style="height:30%;">'; // ลดความสูงของเซลล์ลง
     echo '<td style="width:20%; border:0px solid black;"><img src="' . $this->UniversityLogo . '" style="max-width:70%; max-height:120%; display:block; margin:0 auto;"></td>'; // เพิ่ม CSS เพื่อแสดงผลรูปภาพขนาดเล็กและให้แสดงกลางเซลล์
