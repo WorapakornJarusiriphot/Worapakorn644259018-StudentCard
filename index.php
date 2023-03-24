@@ -1,136 +1,101 @@
 <?php
-
-class StudentCard
+interface StudentInterface
 {
-  public $name;
-  public $studentID;
-  public $birthYear;
-  public $enrollmentYear;
-  public $universityLogo;
-  public $profilePicture;
-  public $visaLogo;
-  public $visaCode;
-  public $cardExpirationDate;
-
-  public function __construct(
-    $name,
-    $studentID,
-    $age,
-    $enrollmentYear,
-    $universityLogo,
-    $profilePicture,
-    $visaLogo,
-    $visaCode,
-    $cardExpirationDate
-  ) {
-    $this->name = $name;
-    $this->studentID = $studentID;
-    $this->birthYear = date('Y') - $age;
-    $this->enrollmentYear = $enrollmentYear;
-    $this->universityLogo = $universityLogo;
-    $this->profilePicture = $profilePicture;
-    $this->visaLogo = $visaLogo;
-    $this->visaCode = $visaCode;
-    $this->cardExpirationDate = $cardExpirationDate;
-  }
-
-  public function getAge()
-  {
-    return date('Y') - $this->birthYear;
-  }
-
-  public function getEnrollmentYear()
-  {
-    return $this->enrollmentYear;
-  }
+  public function CalDateofBirthAge();
+  public function CalClassYear();
+  public function ShowCard();
 }
 
-class ShowCard
+class StudentClass implements StudentInterface
 {
-  public static function display(StudentCard $studentCard)
+  // กำหนด properties ของ class
+  public $Name; // ชื่อของนักเรียน
+  public $Surname; // นามสกุลของนักเรียน
+  public $StudentID; // เลขรหัสนักเรียน
+  public $StudentBirthDate; // วันเกิดของนักเรียน
+  public $Picture; // ภาพถ่ายของนักเรียน
+  public $Faculty; // ชื่อคณะของนักเรียน
+  public $Department; // ชื่อสาขาของนักเรียน
+  public $UniversityName; // ชื่อมหาวิทยาลัย
+  public $UniversityLogo;  // logoมหาวิทยาลัย
+  public $CardNumber;  // หมายเลขบัตร 
+  public $Username;  // ชื่อผู้ใช้
+  public $CardLogo;  // ชื่อยี้ห้อบัตร
+
+  public function __construct()
   {
-    $output = "
-        <div style='width: 18.6cm; height: 15.4cm; border: 1px solid #000; position: relative;'>
-            <img src='{$studentCard->universityLogo}' style='width: 100px; height: 150px; position: absolute; top: 10px; left: 10px;' alt='University Logo'>
-            <img src='{$studentCard->profilePicture}' style='width: 100px; height: 150px; position: absolute; top: 10px; right: 10px;' alt='Profile Picture'>
-            <div style='display: flex; flex-direction: column; align-items: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);'>
-                <h2>{$studentCard->name}</h2>
-                <p>รหัสนักศึกษา: {$studentCard->studentID}</p>
-                <p>อายุ: {$studentCard->getAge()} ปี</p>
-                <p>เรียนชั้นปี: {$studentCard->getEnrollmentYear()}</p>
-                <p>รหัส Visa: {$studentCard->visaCode}</p>
-                <p>วันหมดอายุของบัตรนักศึกษา: {$studentCard->cardExpirationDate}</p>
-            </div>
-            <img src='{$studentCard->visaLogo}' style='width: 200px; height: 100px; position: absolute; bottom: 10px; right: 10px;' alt='Visa Logo'>
-        </div>";
-    echo $output;
+    // กำหนดค่าเริ่มต้นให้ properties
+    $this->Name = "Worapakorn";
+    $this->Surname = "Jarusiriphot";
+    $this->StudentID = "644239018";
+    $this->StudentBirthDate = "2003-03-17";
+    $this->Picture = "Worapakorn.jpg";
+    $this->Faculty = "Faculty of Science and Technology";
+    $this->Department = "Software Engineering";
+    $this->UniversityName = "มหาวิทยาลัยราชภัฏนครปฐม";
+    $this->UniversityLogo = "npru_logo.jpg";
+    $this->CardNumber = "4732 5285 1811 7475";
+    $this->Username = "W. JARUSIRIPHOT";
+    $this->CardLogo = "visa3.png";
+  }
+
+  public function CalDateofBirthAge()
+  {
+    // คำนวณอายุจากวันเกิด
+    $now = new DateTime(); // วันปัจจุบัน
+    $dob = new DateTime($this->StudentBirthDate); // วันเกิดของนักเรียน
+    $diff = $now->diff($dob); // คำนวณวันที่ต่างๆ
+    $age = $diff->y; // ดึงค่าอายุออกมา
+    return $age; // ส่งค่าอายุกลับ
+  }
+
+  public function CalClassYear()
+  {
+    // คำนวณชั้นปีของนักเรียน
+    $year = substr($this->StudentID, 0, 2); // เลขปีของรหัสนักเรียน
+    $class = $year - 62; // คำนวณหาชั้นปี
+    if ($class >= 1 && $class <= 5) { // ถ้าชั้นปีอยู่ในช่วง 1-5
+      return "ชั้นปี " . $class; // ส่งค่าชั้นปีกลับ
+    } else { // ถ้าไม่อยู่ในช่วงนี้
+      return "Unknown"; // ส่งค่า Unknown กลับ
+    }
+  }
+
+  public function Showcard()
+  {
+    echo '<table style="width:8.5cm; height:5.4cm; border:0px solid black; background-image:url(CardEditt5.png); background-repeat:no-repeat; background-size:100% 100%;">';
+
+    echo '<tr style="height:30%;">'; // ลดความสูงของเซลล์ลง
+    echo '<td style="width:20%; border:0px solid black;"><img src="' . $this->UniversityLogo . '" style="max-width:70%; max-height:120%; display:block; margin:0 auto;"></td>'; // เพิ่ม CSS เพื่อแสดงผลรูปภาพขนาดเล็กและให้แสดงกลางเซลล์
+    echo '<td style="width:60%; border:0px solid black; text-align:left; font-size:15px;">' . $this->UniversityName . '</td>'; // เพิ่ม CSS เพื่อแสดงผลข้อความกลางเซลล์และกำหนดขนาดตัวอักษร
+    echo '<td style="width:20%; border:0px solid black;" rowspan="2"><img src="' . $this->Picture . '" style="max-width:100%; max-height:100%;"></td>'; // เพิ่ม CSS เพื่อแสดงผลรูปภาพให้เต็มเซลล์แนวตั้งและใช้ rowspan เพื่อรวมเซลล์
+    echo '</tr>';
+    echo '<tr style="height:30%;">';
+    echo '<td style="width:20%; border:0px solid black;"></td>';
+    echo '<td style="width:60%; border:0px solid black; text-align:left; font-size:5px;">
+    <strong>Name:</strong> ' . $this->Name . ' ' . $this->Surname . '<br>
+    <strong>Student ID:</strong> ' . $this->StudentID . '<br>
+    <strong>Date of Birth:</strong> ' . $this->StudentBirthDate . '<br>
+    <strong>Age:</strong> ' . $this->CalDateofBirthAge() . '<br>
+    <strong>Class Year:</strong> ' . $this->CalClassYear() . '<br>
+    <strong>Faculty:</strong> ' . $this->Faculty . '<br>
+    <strong>Department:</strong> ' . $this->Department . '<br>
+    
+    </td>';
+
+    echo '</tr>';
+    echo '<tr style="height:20%;">';
+    echo '<td style="width:20%; border:0px solid black; text-align:center; font-size:25px" colspan="3">' . $this->CardNumber . '</td>';
+    echo '</tr>';
+
+    echo '<tr style="height:20%;">';
+    echo '<td style="width:80%; border:0px solid black; text-align:center; font-size:15px " colspan="2">' . $this->Username . '</td>';
+    echo '<td style="width:20%; border:0px solid black;"><img src="' . $this->CardLogo . '" style="max-width:100%; max-height:100%; display:block; margin:0 auto;"></td>';
+    echo '</tr>';
+    echo '</table>';
   }
 }
-
-$studentCard = new StudentCard(
-  "นายวรปกร จารุศิริพจน์",
-  "644259018",
-  20,
-  "ปี2",
-  "logo.png",
-  "02.png",
-  "visa2.png",
-  "4732 5285 1811 7475",
-  "2027-08-23"
-);
-
-ShowCard::display($studentCard);
-
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Card</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <style>
-    .student-card {
-      width: 8.6cm;
-      height: 5.4cm;
-      border: 1px solid #000;
-      position: relative;
-      background-color: #f8f9fa;
-      padding: 10px;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .student-card img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    .student-card h2 {
-      font-size: 18px;
-      color: #007bff;
-      margin-bottom: 5px;
-    }
-
-    .student-card p {
-      font-size: 14px;
-      color: #343a40;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <?php ShowCard::display($studentCard); ?>
-      </div>
-    </div>
-  </div>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+// <div class="card-img-overlay --card-img-overlay-purple2
+$student = new StudentClass(); // สร้าง object ของ class StudentClass
+$student->ShowCard(); // เรียกใช้ method ShowCard() เพื่อแสดงข้อมูลบัตรประจำตัวของนักเรียน
+?> 
